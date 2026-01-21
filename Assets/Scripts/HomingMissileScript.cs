@@ -7,6 +7,8 @@ public class HomingMissileScript : MonoBehaviour
     [SerializeField] float turnRate = 360f;     // 旋回速度(度/秒)
     [SerializeField] float homingDelay = 0.15f; // 最初は直進する時間
 
+    [SerializeField]GameManager gm;
+
     public Transform target;
 
     
@@ -39,4 +41,19 @@ public class HomingMissileScript : MonoBehaviour
         
         transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
     }
+   private void OnTriggerEnter2D(Collider2D other) {
+   
+    {
+        if (other.gameObject.CompareTag("Player"))//ミサイルヒット
+        {
+            Destroy(this.gameObject);
+
+        }
+
+        
+    }
+   }
+
 }
+
+
