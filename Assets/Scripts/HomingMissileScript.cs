@@ -7,17 +7,10 @@ public class HomingMissileScript : MonoBehaviour
     [SerializeField] float turnRate = 360f;     // 旋回速度(度/秒)
     [SerializeField] float homingDelay = 0.15f; // 最初は直進する時間
 
-    Transform target;
+    public Transform target;
 
     
     float timer;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
 
     public void SetTarget(Transform t) => target = t;
 
@@ -28,7 +21,7 @@ public class HomingMissileScript : MonoBehaviour
         float dt = Time.deltaTime;
         timer += dt;
 
-        transform.position = transform.up * speed * dt;
+        transform.position += -transform.up * speed * dt;
 
         if(timer < homingDelay || !target)return;
 
