@@ -15,6 +15,7 @@ public class HomingMissileScript : MonoBehaviour
     float timer;
 
     public void SetTarget(Transform t) => target = t;
+    public void SetGM(GameManager g) => gm = g;
 
 
     // Update is called once per frame
@@ -44,7 +45,7 @@ public class HomingMissileScript : MonoBehaviour
    private void OnTriggerEnter2D(Collider2D other) {
    
     {
-        if (other.gameObject.CompareTag("Player"))//ミサイルヒット
+        if (other.gameObject.CompareTag("Player")||other.gameObject.CompareTag("Bullet"))//ミサイルヒット
         {
             Destroy(this.gameObject);
 

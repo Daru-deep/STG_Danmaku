@@ -4,7 +4,7 @@ public class meManager : MonoBehaviour
 {
 
     [SerializeField] private GameManager gm;
-    
+    [SerializeField] private LayerMask playerMask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,8 +21,14 @@ public class meManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EnemyAttack"))
         {
-            Destroy(this.gameObject);
+            PlayerDown();
             
         }
+    }
+
+    public void PlayerDown()
+    {
+        Destroy(this.gameObject);
+        gm.GameOver();
     }
 }
