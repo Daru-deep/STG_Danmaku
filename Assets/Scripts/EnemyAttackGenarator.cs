@@ -43,6 +43,8 @@ void MissileAttack()
 
         GameObject missileOb = Instantiate(missile, transform.position, rot);
         missileOb.GetComponent<HomingMissileScript>().SetTarget(sendTarget);
+
+        
     }
 }
 

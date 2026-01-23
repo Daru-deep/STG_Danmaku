@@ -13,8 +13,8 @@ public class BeamTelegraphLine : MonoBehaviour
     [SerializeField] float maxLength = 30f;
 
     [Header("Timing")]
-    [SerializeField] float telegraphTime = 0.35f; // 予兆時間（当たりなし）
-    [SerializeField] float fireTime = 0.20f;      // 本ビーム時間（当たりあり）
+    public float telegraphTime = 0.35f; // 予兆時間（当たりなし）
+    public float fireTime = 0.20f;      // 本ビーム時間（当たりあり）
 
     [Header("Width")]
     [SerializeField] float telegraphWidth = 0.03f; // 細い
@@ -101,18 +101,40 @@ public class BeamTelegraphLine : MonoBehaviour
         lr.SetPosition(1, end);
     }
 
-    bool HitPlayer(Vector2 start, Vector2 end, float width)
-    {
-        Vector2 dir = end - start;
-        float dist = dir.magnitude;
-        if (dist <= 0.001f) return false;
-        dir /= dist;
+bool HitPlayer(Vector2 start, Vector2 end, float width)
+{
+    Vector2 dir = end - start;
+    float dist = dir.magnitude;
+    if (dist <= 0.001f) return false;
+    dir /= dist;
 
-        // 太い判定：CircleCast（帯として当たる）
-        float radius = width * 0.5f;
-        RaycastHit2D hit = Physics2D.CircleCast(start, radius, dir, dist, playerMask | bulletMask);
-        return hit.collider != null;
+    float radius = width * 0.5f;
+
+    // player + bullet を拾う
+    LayerMask hitMask = playerMask | bulletMask;
+
+    // ほんの少し前に出して自分/発射点巻き込みを減らす（任意）
+    Vector2 castStart = start + dir * 0.02f;
+
+    RaycastHit2D hit = Physics2D.CircleCast(castStart, radius, dir, dist, hitMask);
+    if (!hit.collider) return false;
+
+    int layer = hit.collider.gameObject.layer;
+
+    // Player に当たった時だけ true
+    if (((1 << layer) & playerMask.value) != 0)
+        return true;
+
+    // Bullet に当たったら弾を消す（相殺したいなら）
+    if (((1 << layer) & bulletMask.value) != 0)
+    {
+        Destroy(hit.collider.gameObject);
+        return false;
     }
+
+    return false;
+}
+
 
     meManager FindPlayerLife()
     {
