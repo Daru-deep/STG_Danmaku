@@ -21,7 +21,10 @@ public class EnemyManager : MonoBehaviour
         return HP;
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other)
+     {
+        
+    
         int layer = other.gameObject.layer;
         if(layer == bulletLayer)
         {
