@@ -3,33 +3,58 @@ using UnityEngine;
 
 public class EnemyAttackGenarator : MonoBehaviour
 {
-    int missileCount = 5;
+   
     public GameObject missile;
     public float spreadAngle = 60;
 
     public Transform sendTarget ; 
 
-    [SerializeField] GameObject Beam;    
-    Coroutine missileLoop;
+    [SerializeField] GameObject Beam; 
+    BeamTelegraphLine beam;
+    
+    [SerializeField] FunnelMove fnMove;
 
-    Coroutine BeamLoop;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        beam = Beam.GetComponent<BeamTelegraphLine>();
+    }
     void Start()
     {
-       missileLoop = StartCoroutine(MissileAttackCoroutine());
-       BeamLoop = StartCoroutine(BeamAttack());
+        StartCoroutine (AttackRoutine());
     }
-    IEnumerator MissileAttackCoroutine()
-    {
-        while(true)
-        {
-        MissileAttack();
-        yield return new WaitForSeconds(10f);
-        }
+    IEnumerator AttackRoutine()//デバッグ用の攻撃パターンを手書きで書いています：実装ではインスペクターから操作するように
+    {   
+       var wait = new WaitForSeconds(3);
+
+       yield return wait;
+    
+        MissileAttack(10);
+
+        yield return wait;
+
+        BeamAttack(3,3,5);
+
+        yield return wait;
+
+        FunnelAttack();
+
+        yield return wait;
+
+        FunnelSimau();
+
     }
 
-    
-void MissileAttack()
+void FunnelAttack()
+    {
+        fnMove.FirstMove();
+    }
+
+void FunnelSimau()
+    {
+        fnMove.FNSimau();
+    }
+void MissileAttack(int missileCount)
 {
     float baseAngle = transform.eulerAngles.z;
 
@@ -48,16 +73,9 @@ void MissileAttack()
     }
 }
 
-    IEnumerator BeamAttack()
-    {
 
-        BeamTelegraphLine beam = Beam.GetComponent<BeamTelegraphLine>();
-        while (true)
-        {   
-            yield return new WaitForSeconds(15f);
-            beam.Fire();                      
-            
-            
-        }
+    void BeamAttack(float tt,float ft,float fw)
+    {       
+        beam.Fire(tt,ft,fw);
     }
 }

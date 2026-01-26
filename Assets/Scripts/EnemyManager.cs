@@ -1,10 +1,11 @@
+using System.ComponentModel.Design;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField]private float HP = 100;
     [SerializeField] private GameManager gm;
-
+    
     int bulletLayer;
 
     void Awake()
@@ -32,4 +33,6 @@ public class EnemyManager : MonoBehaviour
             gm.ChangeHPTxt(GetHP());
         }
     }
+    
+
 }

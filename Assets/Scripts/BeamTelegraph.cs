@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.Composites;
 
 [RequireComponent(typeof(LineRenderer))]
 public class BeamTelegraphLine : MonoBehaviour
@@ -13,12 +14,13 @@ public class BeamTelegraphLine : MonoBehaviour
     [SerializeField] float maxLength = 30f;
 
     [Header("Timing")]
-    public float telegraphTime = 0.35f; // 予兆時間（当たりなし）
-    public float fireTime = 0.20f;      // 本ビーム時間（当たりあり）
+    private float telegraphTime = 0.35f; // 予兆時間（当たりなし）
+    private float fireTime = 0.20f;      // 本ビーム時間（当たりあり）
 
     [Header("Width")]
-    [SerializeField] float telegraphWidth = 0.03f; // 細い
-    [SerializeField] float fireWidth = 0.20f;      // 太い（見た目＆判定の太さ）
+    private float widthRatio = 3;  //比率
+    private float telegraphWidth ; // 細い
+    private float fireWidth = 0.20f;      // 太い（見た目＆判定の太さ）
 
     [Header("Hit")]
 
@@ -32,12 +34,24 @@ public class BeamTelegraphLine : MonoBehaviour
         lr.enabled = false;
         SetWidth(telegraphWidth);
     }
-
-    public void Fire()
+    /// <summary>
+    /// ビームを発射します。変数の順番に気をつけてね
+    /// </summary>
+    /// <param name="tt">予告ビームの時間</param>
+    /// <param name="ft">本番ビームの時間</param>
+    /// <param name="fw">本番ビームの</param>
+    public void Fire(float tt,float ft,float fw)
     {
+        telegraphTime = tt;
+        fireTime = ft;
+        fireWidth = fw;
+        telegraphWidth = TelegraphWidth();
         if (co != null) StopCoroutine(co);
         co = StartCoroutine(FireRoutine());
     }
+
+    //ビームの太さの比率はこれで固定(比率が毎回変わるとゲームとしてアレなため)
+    private float TelegraphWidth() => fireWidth / Mathf.Max(0.0001f, widthRatio);
 
     IEnumerator FireRoutine()
     {
