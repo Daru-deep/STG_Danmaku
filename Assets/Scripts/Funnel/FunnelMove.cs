@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
@@ -25,14 +26,20 @@ public class FunnelMove : MonoBehaviour
 
     Coroutine move;
 
+    //移動
+    [SerializeField] float moveSpeed = 10f;
+
     //回転
     [SerializeField] float radius = 3f;      // 半径
     [SerializeField] float angularSpeed = 90f; // 度/秒
     [SerializeField] float baseAngle;        // 全体の回転角（積算）
 
-   
+
+
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     public void FirstMove()
 
     {
@@ -49,9 +56,13 @@ public class FunnelMove : MonoBehaviour
     {
 
     }
-    public void FNSimau()
-    {
-        move = StartCoroutine(FNRetreat());
+    public void FNSimau(Transform house)
+    {   if(move != null)
+        {
+        StopCoroutine(move);
+        move = null;
+        }
+        move = StartCoroutine(FNRetreat(house));
     }
     IEnumerator FNPointAttack()
     {
@@ -80,27 +91,68 @@ public class FunnelMove : MonoBehaviour
         }
     }
 
-    IEnumerator FNRetreat()
-    {   float dt = 0;
-        float time = dt;
-        while(time<5)
-        {
-            dt += Time.deltaTime;
-            StopCoroutine(fire);
-            foreach(GameObject fn in funnels)
-            {
-                fn.transform.Translate(0,0,0);
-
-            }
-            yield return new WaitForEndOfFrame();
-        }
-            foreach(GameObject fn in funnels)
-            {
-                Destroy(fn);
-
-            }
-        
+    IEnumerator FNRetreat(Transform house)
+{
+    Debug.Log("START_FNRestert_");
+    // houseが無いなら撤退処理できない
+    if (!house)
+    {
+        Debug.LogWarning("FNRetreat: house が見つからないので撤退できない");
+        yield break;
     }
+    Debug.Log($"funnels={funnels.Length}");
+    // funnelsが無い/空なら何もしない
+    if (funnels == null || funnels.Length == 0)
+    {
+        Debug.Log("FNRetreat: funnels が空なので撤退不要");
+        yield break;
+    }
+
+    // 攻撃停止（nullでも安全）
+    if (fire != null)
+    {
+        StopCoroutine(fire);
+        fire = null;
+    }
+
+    const float arriveDist = 0.005f;
+    float arriveSqr = arriveDist * arriveDist;
+
+    // 全員到達までループ
+    while (true)
+    {
+        bool allReached = true;
+
+        for (int i = 0; i < funnels.Length; i++)
+        {
+
+               var fn = funnels[i];
+                if (!fn) continue;
+
+
+
+
+            fn.transform.position = Vector3.MoveTowards(
+                fn.transform.position,
+                house.position,
+                moveSpeed * Time.deltaTime
+            );
+
+            if ((fn.transform.position - house.position).sqrMagnitude > arriveSqr)
+                allReached = false;
+        }
+
+        if (allReached) break;
+        yield return null;
+    }
+
+    // 破壊＋配列クリア（後で再生成するなら大事）
+    for (int i = 0; i < funnels.Length; i++)
+    {
+        if (funnels[i]) Destroy(funnels[i]);
+        funnels[i] = null;
+    }
+}
 
     public void InstanceFunnel(int funnelCount)
     {   

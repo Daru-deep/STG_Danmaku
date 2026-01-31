@@ -52,7 +52,7 @@ void FunnelAttack()
 
 void FunnelSimau()
     {
-        fnMove.FNSimau();
+        fnMove.FNSimau(transform);
     }
 void MissileAttack(int missileCount)
 {
