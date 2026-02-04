@@ -1,0 +1,26 @@
+C:.
+│  BeamTelegraph.cs
+│  BeamTelegraph.cs.meta
+│  EnemyAttackGenarator.cs
+│  EnemyAttackGenarator.cs.meta
+│  EnemyManager.cs
+│  EnemyManager.cs.meta
+│  Funnel.meta
+│  GameManager.cs
+│  GameManager.cs.meta
+│  gunManager.cs
+│  gunManager.cs.meta
+│  HomingMissileScript.cs
+│  HomingMissileScript.cs.meta
+│  meControler.cs
+│  meControler.cs.meta
+│  meManager.cs
+│  meManager.cs.meta
+│  PlayerAttackGenarator.cs
+│  PlayerAttackGenarator.cs.meta
+│
+└─Funnel
+        FunnelManager.cs
+        FunnelManager.cs.meta
+        FunnelMove.cs
+        FunnelMove.cs.meta

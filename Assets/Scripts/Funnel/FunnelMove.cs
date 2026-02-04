@@ -11,7 +11,7 @@ public class FunnelMove : MonoBehaviour
 
     [SerializeField] GameObject funnelPrefab;
 
-    [SerializeField] Transform[] instancePoint;
+    [SerializeField] Transform standardPoint;
 
     [SerializeField] Transform target;
 
@@ -26,6 +26,8 @@ public class FunnelMove : MonoBehaviour
 
     Coroutine move;
 
+    Coroutine placeOnce;
+
     //移動
     [SerializeField] float moveSpeed = 10f;
 
@@ -33,6 +35,8 @@ public class FunnelMove : MonoBehaviour
     [SerializeField] float radius = 3f;      // 半径
     [SerializeField] float angularSpeed = 90f; // 度/秒
     [SerializeField] float baseAngle;        // 全体の回転角（積算）
+
+    
 
 
 
@@ -45,6 +49,7 @@ public class FunnelMove : MonoBehaviour
     {
         InstanceFunnel(2);
         if(fire != null)StopCoroutine(fire);
+        fire = null;
         fire = StartCoroutine(FunnelFire1());
         
         
@@ -156,13 +161,15 @@ public class FunnelMove : MonoBehaviour
 
     public void InstanceFunnel(int funnelCount)
     {   
+        //ファンネルをインスタンスする。
+        //ファンネルを扇状に移動させる。
         if (!funnelPrefab)
         {
             Debug.LogError("funnelPrefab が未設定");
             return;
         }
 
-        if (instancePoint == null || instancePoint.Length == 0)
+        if (standardPoint == null)
         {
             Debug.LogError("instancePoint が未設定");
             return;
@@ -171,7 +178,7 @@ public class FunnelMove : MonoBehaviour
 
          for (int i = 0; i < funnels.Length; i++)
         {
-            Transform p = instancePoint[i % instancePoint.Length];
+            Transform p = standardPoint;
             funnels[i] = Instantiate(funnelPrefab, p.position, p.rotation, p);
             funnels[i].name = $"Funnel_{i}";
             FunnelManager ifm = funnels[i].GetComponent<FunnelManager>();
@@ -179,21 +186,84 @@ public class FunnelMove : MonoBehaviour
             ifm.SetMyNum(i);
             ifm.SetMoveManager(this);
         }
+        if(placeOnce != null)StopCoroutine(placeOnce);
+        placeOnce = StartCoroutine(PlaceOnce());
         
     }
+    [Header("Arc (Screen-based)")]
+    [SerializeField] float avoidCenterDeg = 20f; // 上中央(90°)から±何度空ける
+    [SerializeField] float radiusAdd = -1.2f;     // 半径加算
+
+    IEnumerator PlaceOnce()
+    {
+        if (funnels == null || funnels.Length == 0) yield break;
+
+        var cam = Camera.main;
+        if (!cam) {
+            Debug.LogError("cam is null");
+            yield break;
+            }
+
+        Vector2 center = cam.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0f)); // 画面下中心
+        Vector2 top    = cam.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f)); // 画面上中心
+        float radius = Vector2.Distance(center, top) + radiusAdd;
+        
+
+        // 0〜180 から 90±avoid を除外
+        float rightEnd = 90f - avoidCenterDeg;
+        float leftBeg  = 90f + avoidCenterDeg;
+
+        float arcRight = rightEnd - 0f;
+        float arcLeft  = 180f - leftBeg;
+        float arcTotal = arcRight + arcLeft;
+
+        for (int i = 0; i < funnels.Length; i++)
+        {
+            var fn = funnels[i];
+            if (!fn) continue;
+
+            float t = (funnels.Length == 1) ? 0.5f : (float)i / (funnels.Length - 1);
+            float a = t * arcTotal;
+
+            float angleDeg = (a <= arcRight)
+                ? (0f + a)
+                : (leftBeg + (a - arcRight));
+
+            float rad = angleDeg * Mathf.Deg2Rad;
+            Vector2 pos = center + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * radius;
+            
+
+           while(!StepMoveTowards(
+                fn.transform,
+                pos,
+                moveSpeed
+            ))yield return null;
+            
+        }
+    }
+
+bool StepMoveTowards(Transform tr, Vector3 targetPos, float speed)
+    {
+        tr.position = Vector3.MoveTowards( tr.position,targetPos,speed * Time.deltaTime);
+        return (targetPos - tr.position).sqrMagnitude <= 0.0001f;
+    }
+
+    
+
+
+    
 
     
 [Header ("攻撃パターン１")]
 [SerializeField] float fnWaitTime = 10f;
 IEnumerator FunnelFire1()
     {
-        
-        float ft = 3;
-        float tt = 5;
-        float fw = 6;
+        Debug.Log($"StartFNFire");
+        float ft = 1;
+        float tt = 1;
+        float fw = 0.5f;
 
-    while (true)
-    {
+
         yield return new WaitForSeconds(fnWaitTime);
 
         foreach (GameObject fn in funnels)
@@ -206,9 +276,9 @@ IEnumerator FunnelFire1()
             fm.InstansBeam(ft,tt,fw);
             Coroutine hm = StartCoroutine(HomingTime(ft+fw));
         }
+    
     }
-    }
-        IEnumerator HomingTime(float time)
+    IEnumerator HomingTime(float time)
     {
 
         homing = true;

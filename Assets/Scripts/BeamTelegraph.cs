@@ -23,6 +23,7 @@ public class BeamTelegraphLine : MonoBehaviour
     private float fireWidth = 0.20f;      // 太い（見た目＆判定の太さ）
 
     [Header("Hit")]
+    private bool test = false;
 
     LineRenderer lr;
     Coroutine co;
@@ -80,7 +81,7 @@ public class BeamTelegraphLine : MonoBehaviour
             {
                 // ここでゲームオーバー処理を呼ぶ
                 var player = FindPlayerLife();
-                if (player != null) player.PlayerDown();
+                if (player != null&&!test) player.PlayerDown();
                 break;
             }
 
