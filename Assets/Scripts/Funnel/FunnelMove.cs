@@ -192,7 +192,7 @@ public class FunnelMove : MonoBehaviour
     }
     [Header("Arc (Screen-based)")]
     [SerializeField] float avoidCenterDeg = 20f; // 上中央(90°)から±何度空ける
-    [SerializeField] float radiusAdd = -1.2f;     // 半径加算
+    [SerializeField] float radiusAdd = -1.5f;     // 半径加算
 
     IEnumerator PlaceOnce()
     {
@@ -225,20 +225,20 @@ public class FunnelMove : MonoBehaviour
             float t = (funnels.Length == 1) ? 0.5f : (float)i / (funnels.Length - 1);
             float a = t * arcTotal;
 
-            float angleDeg = (a <= arcRight)
-                ? (0f + a)
-                : (leftBeg + (a - arcRight));
+            string angleDeg = (a <= arcRight)
+                ? ($"左:i={i}:a={a}")
+                : ($"右:i={i}:a={a}");
 
-            float rad = angleDeg * Mathf.Deg2Rad;
-            Vector2 pos = center + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * radius;
-            
+            //float rad = angleDeg * Mathf.Deg2Rad;
+            //Vector2 pos = center + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * radius;
 
-           while(!StepMoveTowards(
+           /*while(!StepMoveTowards(
                 fn.transform,
                 pos,
                 moveSpeed
             ))yield return null;
-            
+            */
+            Debug.Log(angleDeg);
         }
     }
 
