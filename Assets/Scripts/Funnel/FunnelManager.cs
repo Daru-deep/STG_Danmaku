@@ -15,6 +15,8 @@ public class FunnelManager : MonoBehaviour
     [SerializeField] FunnelMove fm;
 
     private int myNum = 0;
+
+    private bool isMoving = false;
     
     public bool homing;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -59,9 +61,19 @@ public class FunnelManager : MonoBehaviour
     {
         fm = set;
     }
-    Coroutine co;
-    public void InstansBeam(float ft,float tt,float fw)
+
+    public bool GetIsMoving()
     {
+        return isMoving;
+    }
+
+    public void SetIsMoving(bool moveing)
+    {
+        isMoving = moveing;
+    }
+
+    public void InstansBeam(float ft,float tt,float fw)
+    {   
         bm.Fire(ft,tt,fw);
     }
 
