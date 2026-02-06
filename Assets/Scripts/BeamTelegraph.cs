@@ -54,10 +54,12 @@ public class BeamTelegraphLine : MonoBehaviour
     //ビームの太さの比率はこれで固定(比率が毎回変わるとゲームとしてアレなため)
     private float TelegraphWidth() => fireWidth / Mathf.Max(0.0001f, widthRatio);
 
+    //ビームの状態を返すint
+    public int beamCondition = 0;
     IEnumerator FireRoutine()
     {
         lr.enabled = true;
-
+        beamCondition = 1;
         // 1) 予兆：細い（当たり判定なし）
         SetWidth(telegraphWidth);
         float t = 0f;
@@ -67,7 +69,7 @@ public class BeamTelegraphLine : MonoBehaviour
             UpdateLine(); // 見た目更新（追従させたいなら毎フレーム）
             yield return null;
         }
-
+        beamCondition = 2;
         // 2) 本ビーム：太い（当たり判定あり）
         SetWidth(fireWidth);
         t = 0f;
@@ -90,6 +92,8 @@ public class BeamTelegraphLine : MonoBehaviour
 
         lr.enabled = false;
         co = null;
+        beamCondition= 0;
+        
     }
 
     void SetWidth(float w)

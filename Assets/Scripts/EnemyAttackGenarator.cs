@@ -39,7 +39,7 @@ public class EnemyAttackGenarator : MonoBehaviour
 
         FunnelAttack();
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(20f);
 
         FunnelSimau();
 

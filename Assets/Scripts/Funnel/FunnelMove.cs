@@ -38,7 +38,7 @@ public class FunnelMove : MonoBehaviour
     [SerializeField] float angularSpeed = 90f; // 度/秒
     [SerializeField] float baseAngle;        // 全体の回転角（積算）
 
-
+     private int CompMove = 0;
 
 
 
@@ -48,7 +48,7 @@ public class FunnelMove : MonoBehaviour
     public void FirstMove()
 
     {
-        InstanceFunnel(2);
+        InstanceFunnel(4);
         if (fire != null) StopCoroutine(fire);
         fire = null;
         fire = StartCoroutine(FunnelFire1());
@@ -198,6 +198,8 @@ public class FunnelMove : MonoBehaviour
     [SerializeField] float avoidCenterDeg = 20f; // 上中央(90°)から±何度空ける
     [SerializeField] float radiusAdd = -1.5f;     // 半径加算
 
+   
+
     IEnumerator PlaceOnce()
     {
         if (funnels == null || funnels.Length == 0) yield break;
@@ -231,10 +233,10 @@ public class FunnelMove : MonoBehaviour
 
         for (int i = 0; i < n; i++)
         {
-            float stepR = (nRight <= 1) ? 0f : arcRight / (nRight - 1);
+            float stepR = (nRight <= 1) ? 0f : 20f;
             float angleR(int i) => rightEnd - stepR * i; // i=0がrightEnd、増えるほど0へ
 
-            float stepL = (nLeft <= 1) ? 0f : (180f - leftBeg) / (nLeft - 1);
+            float stepL = (nLeft <= 1) ? 0f : 20;
             float angleL(int j) => leftBeg + stepL * j;  // j=0がleftBeg、増えるほど180へ
 
 
@@ -272,7 +274,9 @@ public class FunnelMove : MonoBehaviour
     {   
 
         tr.position = Vector3.MoveTowards(tr.position, targetPos, speed * Time.deltaTime);
-        return (targetPos - tr.position).sqrMagnitude <= 0.0001f;
+        bool check = (targetPos - tr.position).sqrMagnitude <= 0.01f;
+        if(check)CompMove++;
+        return check;
     }
 
 
@@ -283,16 +287,18 @@ public class FunnelMove : MonoBehaviour
 
     [Header("攻撃パターン１")]
     [SerializeField] float fnWaitTime = 10f;
+
+    [SerializeField] float fireTimeSpan = 1;
     IEnumerator FunnelFire1()
     {
         Debug.Log($"StartFNFire");
         float ft = 1;
-        float tt = 1;
+        float tt = 0.5f;
         float fw = 0.5f;
 
 
         yield return new WaitForSeconds(fnWaitTime);
-        int CompMove = 0;
+
         foreach (GameObject fn in funnels)
         {
             if (!fn) continue;
@@ -300,22 +306,24 @@ public class FunnelMove : MonoBehaviour
 
             var fm = fn.GetComponent<FunnelManager>();
             if (!fm) continue;
-            if (!fm.GetIsMoving()){CompMove++;}
-            while(CompMove <= funnels.Length -1){yield return null;}
+
+
+            yield return new WaitUntil(() => CompMove == funnels.Length);
+            Coroutine hm = StartCoroutine(HomingTime(ft + tt,fm));
+            fm.InstansBeam(tt, ft, fw);
             
 
-            fm.InstansBeam(ft, tt, fw);
-            Coroutine hm = StartCoroutine(HomingTime(ft + fw));
+            yield return new WaitForSeconds(fireTimeSpan);
         }
 
     }
-    IEnumerator HomingTime(float time)
+    IEnumerator HomingTime(float time,FunnelManager fm)
     {
 
-        homing = true;
-        center = this.target.transform.position;
-        yield return new WaitForSeconds(time);
         homing = false;
-        yield return new WaitForSeconds(10f);
+        center = !target? transform.position:target.transform.position;
+        yield return new WaitUntil(()=> fm.GetBeamCondition() == 1||fm.GetBeamCondition()== 2);
+        Debug.Log("BeamCondition=="+fm.GetBeamCondition());
+        homing = true;
     }
 }

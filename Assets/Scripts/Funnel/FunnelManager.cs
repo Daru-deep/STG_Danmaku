@@ -49,6 +49,13 @@ public class FunnelManager : MonoBehaviour
         );
 
         transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
+
+        
+    }
+
+    public int GetBeamCondition()
+    {
+        return bm.beamCondition;
     }
     public void SetMyNum(int i) => myNum = i;
 
@@ -72,9 +79,9 @@ public class FunnelManager : MonoBehaviour
         isMoving = moveing;
     }
 
-    public void InstansBeam(float ft,float tt,float fw)
+    public void InstansBeam(float tt,float ft,float fw)
     {   
-        bm.Fire(ft,tt,fw);
+        bm.Fire(tt,ft,fw);
     }
 
 
