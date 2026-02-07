@@ -319,11 +319,11 @@ public class FunnelMove : MonoBehaviour
     }
     IEnumerator HomingTime(float time,FunnelManager fm)
     {
-
-        fm.SetHoming(false);
         center = !target? transform.position:target.transform.position;
         yield return new WaitUntil(()=> fm.GetBeamCondition() == 1||fm.GetBeamCondition()== 2);
         Debug.Log("BeamCondition=="+fm.GetBeamCondition());
         fm.SetHoming(true);
+        yield return new WaitUntil(()=> fm.GetBeamCondition() == 0);
+        fm.SetHoming(false);
     }
 }

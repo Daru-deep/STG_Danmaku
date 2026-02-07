@@ -16,9 +16,11 @@ public class meControler : MonoBehaviour
 
     Coroutine dashCo;
     SpriteRenderer meColor;
+    meManager mM ;
 
     void Awake()
     {
+        mM = GetComponent<meManager>();
         meColor = GetComponent<SpriteRenderer>();
         moveSpeed = normalSpeed;
     }
@@ -35,6 +37,12 @@ public class meControler : MonoBehaviour
     {
         if (ctx.performed) shiftHeld = true;
         if (ctx.canceled)  shiftHeld = false;
+    }
+
+    public void OnParryEvent(InputAction.CallbackContext ctx)
+    {
+        if(isDashing&&ctx.performed) mM.isParry = true;
+        
     }
 
     void Update()

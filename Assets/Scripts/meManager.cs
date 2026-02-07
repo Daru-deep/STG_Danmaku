@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class meManager : MonoBehaviour
@@ -5,6 +6,9 @@ public class meManager : MonoBehaviour
 
     [SerializeField] private GameManager gm;
     [SerializeField] private LayerMask playerMask;
+
+    public bool isParry = false;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,9 +25,22 @@ public class meManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EnemyAttack"))
         {
-            PlayerDown();
-            
+            if(isParry)
+            {
+                StartCoroutine (GoParry());//円のエフェクトとか付けたいね。あとコントローラに登録してないよ
+                return;
+            }
+            else
+            {
+                PlayerDown();
+            }
         }
+    }
+
+    IEnumerator GoParry()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isParry = false;
     }
 
     public void PlayerDown()
