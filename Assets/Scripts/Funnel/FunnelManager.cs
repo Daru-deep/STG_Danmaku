@@ -12,13 +12,13 @@ public class FunnelManager : MonoBehaviour
 
     [SerializeField] float spriteAngleOffset = 180;// 初期補正
 
-    [SerializeField] FunnelMove fm;
+    [SerializeField] FunnelMove funnelMove;
 
     private int myNum = 0;
 
     private bool isMoving = false;
     
-    public bool homing;
+    private bool homing;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,14 +29,14 @@ public class FunnelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if(!fm)
+        if(!funnelMove)
         {   
             Debug.LogError($"moveManager is null in Funnel at No.[{myNum}] :-( ");
             return;
         }
 
         float dt = Time.deltaTime;
-        if(fm.homing) return;
+        if(homing) return;
         if (!target) return;
         Vector2 to = (Vector2)target.position - (Vector2)transform.position;
         float targetAngle = Mathf.Atan2(to.y, to.x) * Mathf.Rad2Deg + 90;
@@ -57,6 +57,18 @@ public class FunnelManager : MonoBehaviour
     {
         return bm.beamCondition;
     }
+
+    public bool GetHoming()
+    {
+        return homing;
+    }
+
+    public void SetHoming(bool hm)
+    {
+        homing = hm;
+    }
+
+
     public void SetMyNum(int i) => myNum = i;
 
     public void SetTarget(Transform set)
@@ -66,7 +78,7 @@ public class FunnelManager : MonoBehaviour
 
     public void SetMoveManager(FunnelMove set)
     {
-        fm = set;
+        funnelMove = set;
     }
 
     public bool GetIsMoving()

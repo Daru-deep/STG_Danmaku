@@ -19,7 +19,7 @@ public class FunnelMove : MonoBehaviour
 
 
 
-    public bool homing;
+    
 
 
 
@@ -83,15 +83,15 @@ public class FunnelMove : MonoBehaviour
             for (int i = 0; i < funnels.Length; i++)
             {
                 var fn = funnels[i];
-
+                var fm = fn.GetComponent<FunnelManager>();
                 float step = 360f / funnels.Length; // 等間隔
                 float angle = baseAngle + step * i; // 各ファンネルの角度
 
                 // 角度→位置（2D）
                 float rad = angle * Mathf.Deg2Rad;
                 Vector3 offset = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * radius;
-                if (!homing) fn.transform.position = target.position + offset;
-                if (homing) fn.transform.position = center;
+                if (!fm.GetHoming()) fn.transform.position = target.position + offset;
+                if (fm.GetHoming()) fn.transform.position = center;
             }
 
             yield return new WaitForEndOfFrame();
@@ -320,10 +320,10 @@ public class FunnelMove : MonoBehaviour
     IEnumerator HomingTime(float time,FunnelManager fm)
     {
 
-        homing = false;
+        fm.SetHoming(false);
         center = !target? transform.position:target.transform.position;
         yield return new WaitUntil(()=> fm.GetBeamCondition() == 1||fm.GetBeamCondition()== 2);
         Debug.Log("BeamCondition=="+fm.GetBeamCondition());
-        homing = true;
+        fm.SetHoming(true);
     }
 }
