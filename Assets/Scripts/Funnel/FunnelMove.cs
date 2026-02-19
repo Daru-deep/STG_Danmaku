@@ -141,6 +141,7 @@ public class FunnelMove : MonoBehaviour
 
                     var fn = funnels[attackingCount];
                     var fm = fn.GetComponent<FunnelManager>();
+                    if (fm == null) { Debug.LogError($"[FunnelMove] FunnelManager not found on {fn.name}"); yield break; }
                     float step = 360f / funnels.Length; // 等間隔
                     float angle = attackAngle[attackingCount]; // 各ファンネルの角度
 

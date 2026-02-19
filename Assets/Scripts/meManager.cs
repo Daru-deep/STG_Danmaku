@@ -9,10 +9,9 @@ public class meManager : MonoBehaviour
 
     public bool isParry = false;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        if (gm == null) { Debug.LogError($"[{name}] GameManager is not assigned"); enabled = false; return; }
     }
 
     // Update is called once per frame

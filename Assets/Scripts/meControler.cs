@@ -21,6 +21,7 @@ public class meControler : MonoBehaviour
     void Awake()
     {
         mM = GetComponent<meManager>();
+        if (mM == null) { Debug.LogError($"[{name}] meManager not found"); enabled = false; return; }
         meColor = GetComponent<SpriteRenderer>();
         moveSpeed = normalSpeed;
     }

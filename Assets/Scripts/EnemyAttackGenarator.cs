@@ -17,7 +17,10 @@ public class EnemyAttackGenarator : MonoBehaviour
 
     void Awake()
     {
+        if (Beam == null)   { Debug.LogError($"[{name}] Beam is not assigned");   enabled = false; return; }
+        if (fnMove == null) { Debug.LogError($"[{name}] fnMove is not assigned"); enabled = false; return; }
         beam = Beam.GetComponent<BeamTelegraphLine>();
+        if (beam == null)   { Debug.LogError($"[{name}] BeamTelegraphLine not found on Beam"); enabled = false; return; }
     }
     void Start()
     {
