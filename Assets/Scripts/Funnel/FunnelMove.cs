@@ -147,7 +147,12 @@ public class FunnelMove : MonoBehaviour
                     // 角度→位置（2D）
                     float rad = angle * Mathf.Deg2Rad;
                     Vector3 offset = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * radius;
-                    while (!StepMoveTowards(fn.transform, target.position + offset, 10f)) yield return null;
+                    while (true)
+                    {
+                        if (!target) yield break;
+                        if (StepMoveTowards(fn.transform, target.position + offset, 10f)) break;
+                        yield return null;
+                    }
                     GoFire(attackingCount);
                     simpleAttacking[attackingCount] = false;
 
