@@ -1,1 +1,2 @@
 week_start,week_end,p0_stability,bug_investigation,next_step,unity_lifecycle,architecture,readability,maintainability,performance_gc,overall_100,notes
+2026-02-16,2026-02-22,2,2,2,2,2,2,2,2,40,初回スコア。P0 scan でクラッシュ候補10件検出。機能実装力はあるが防御的プログラミングが全体的に不足。
