@@ -42,7 +42,13 @@ public class meControler : MonoBehaviour
 
     public void OnParryEvent(InputAction.CallbackContext ctx)
     {
-        if(isDashing&&ctx.performed) mM.isParry = true;
+
+        
+        if(isDashing&&ctx.performed) 
+        {
+            Debug.Log("PUSH_PARRY_EVENT!!");
+            mM.isParry = true;
+        }
         
     }
 

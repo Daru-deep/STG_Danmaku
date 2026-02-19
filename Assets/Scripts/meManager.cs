@@ -6,6 +6,7 @@ public class meManager : MonoBehaviour
 
     [SerializeField] private GameManager gm;
     [SerializeField] private LayerMask playerMask;
+    [SerializeField] private ParticleSystem particle;
 
     public bool isParry = false;
     
@@ -38,13 +39,30 @@ public class meManager : MonoBehaviour
 
     IEnumerator GoParry()
     {
+
+        //この上に書く
         yield return new WaitForSeconds(0.5f);
         isParry = false;
     }
 
     public void PlayerDown()
     {
-        Destroy(this.gameObject);
-        gm.GameOver();
+        if(!isParry)
+        {
+            Destroy(this.gameObject);
+            gm.GameOver();
+        }
+        else
+        {
+            // パーティクルシステムのインスタンスを生成する。
+			ParticleSystem newParticle = Instantiate(particle);
+			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
+			newParticle.transform.position = this.transform.position;
+			// パーティクルを発生させる。
+			newParticle.Play();
+			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
+			// ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
+			Destroy(newParticle.gameObject, 5.0f);
+        }
     }
 }
