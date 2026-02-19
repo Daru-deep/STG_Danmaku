@@ -479,6 +479,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   maxLength: 100
+  beamCondition: 0
 --- !u!120 &1340039748
 LineRenderer:
   serializedVersion: 2
@@ -808,7 +809,6 @@ MonoBehaviour:
   funnelPrefab: {fileID: 2715691883159622310, guid: f507fe6b082b80247a3e1ef2e7b2e791, type: 3}
   standardPoint: {fileID: 955066570}
   target: {fileID: 2036015934}
-  homing: 0
   moveSpeed: 10
   radius: 3
   angularSpeed: 90
@@ -816,6 +816,7 @@ MonoBehaviour:
   avoidCenterDeg: 20
   radiusAdd: -1
   fnWaitTime: 3
+  fireTimeSpan: 1
 --- !u!4 &1744760860
 Transform:
   m_ObjectHideFlags: 0
@@ -865,7 +866,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1105.1293, y: 602.484}
+  m_AnchoredPosition: {x: -441, y: 261}
   m_SizeDelta: {x: 200, y: 140.9}
   m_Pivot: {x: 0.8098999, y: 0.5000001}
 --- !u!114 &1813447351
@@ -1433,6 +1434,7 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 0
+  isParry: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

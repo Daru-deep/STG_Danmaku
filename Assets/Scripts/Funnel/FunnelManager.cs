@@ -71,6 +71,11 @@ public class FunnelManager : MonoBehaviour
 
     public void SetMyNum(int i) => myNum = i;
 
+    public int GetMyNum()
+    {
+        return myNum;
+    }
+
     public void SetTarget(Transform set)
     {
         target = set;

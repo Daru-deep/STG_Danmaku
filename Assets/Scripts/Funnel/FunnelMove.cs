@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SocialPlatforms.GameCenter;
@@ -49,11 +50,28 @@ public class FunnelMove : MonoBehaviour
 
     {
         InstanceFunnel(4);
+        GoFire(20);
+
+
+    }
+
+    public void GoAllRangeAttack()
+    {   
+       /* if(funnels.Length != 0)
+        {
+            FNSimau(gameObject.transform);
+        }
+        */
+        if(move != null)StopCoroutine(move);
+        move = StartCoroutine(FNAllRangeAttack());
+
+    }
+
+    public void GoFire(int fireNum)
+    {
         if (fire != null) StopCoroutine(fire);
         fire = null;
-        fire = StartCoroutine(FunnelFire1());
-
-
+        fire = StartCoroutine(FunnelFire(fireNum));
     }
 
     Vector3 center;
@@ -74,6 +92,7 @@ public class FunnelMove : MonoBehaviour
     IEnumerator FNPointAttack()
     {
         InstanceFunnel(4);
+        yield return new WaitWhile(AnyFunnelMoving);
         while (true)
         {
             if (!target) { Debug.Log("ターゲットがいませんのでFNPointAttackを実行できません"); break; }
@@ -95,6 +114,44 @@ public class FunnelMove : MonoBehaviour
             }
 
             yield return new WaitForEndOfFrame();
+        }
+        
+    }
+
+    IEnumerator FNAllRangeAttack()
+    {   
+        bool[] simpleAttacking = new bool [4];
+        float[] attackAngle = new float [4];
+        attackAngle[0] = 300;
+        attackAngle[1] = 30;
+        attackAngle[2] = 180;
+        attackAngle[3] = 0;
+
+        InstanceFunnel(4);
+        yield return new WaitWhile(AnyFunnelMoving);
+        for(int attackingCount = 0 ;attackingCount<funnels.Length;attackingCount++)
+        {
+            simpleAttacking[attackingCount] = true;
+            while (simpleAttacking[attackingCount])
+            {
+                if (!target) { Debug.Log("ターゲットがいませんのでFNAllRangeAttackを実行できません");yield break; }
+                if (funnels == null || funnels.Length == 0) { Debug.Log("ファンネルがいませんのでFNAllRangeAttackを実行できません");yield break; }
+
+
+
+                    var fn = funnels[attackingCount];
+                    var fm = fn.GetComponent<FunnelManager>();
+                    float step = 360f / funnels.Length; // 等間隔
+                    float angle = attackAngle[attackingCount]; // 各ファンネルの角度
+
+                    // 角度→位置（2D）
+                    float rad = angle * Mathf.Deg2Rad;
+                    Vector3 offset = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * radius;
+                    while (!StepMoveTowards(fn.transform, target.position + offset, 10f)) yield return null;
+                    GoFire(attackingCount);
+                    simpleAttacking[attackingCount] = false;
+
+            }
         }
     }
 
@@ -122,8 +179,7 @@ public class FunnelMove : MonoBehaviour
             fire = null;
         }
 
-        const float arriveDist = 0.005f;
-        float arriveSqr = arriveDist * arriveDist;
+       
 
         // 全員到達までループ
         while (true)
@@ -145,7 +201,7 @@ public class FunnelMove : MonoBehaviour
                     moveSpeed * Time.deltaTime
                 );
 
-                if ((fn.transform.position - house.position).sqrMagnitude > arriveSqr)
+                if ((fn.transform.position - house.position).sqrMagnitude >= 0.01f)
                     allReached = false;
             }
 
@@ -279,6 +335,19 @@ public class FunnelMove : MonoBehaviour
         return check;
     }
 
+    bool AnyFunnelMoving()//全部移動したか
+{
+    if (funnels == null) return false;
+
+    foreach (var fn in funnels)
+    {
+        if (!fn) continue;
+        var fm = fn.GetComponent<FunnelManager>();
+        if (fm != null && fm.GetIsMoving()) return true;
+    }
+    return false; 
+}
+
 
 
 
@@ -286,37 +355,65 @@ public class FunnelMove : MonoBehaviour
 
 
     [Header("攻撃パターン１")]
-    [SerializeField] float fnWaitTime = 10f;
+
 
     [SerializeField] float fireTimeSpan = 1;
-    IEnumerator FunnelFire1()
+    IEnumerator FunnelFire(int fnNum)
+{
+    float ft = 1f;
+    float tt = 0.5f;
+    float fw = 0.5f;
+
+    if (funnels == null || funnels.Length == 0) yield break;
+
+    // 20: 1機ずつ連続
+    if (fnNum == 20)
     {
-        Debug.Log($"StartFNFire");
-        float ft = 1;
-        float tt = 0.5f;
-        float fw = 0.5f;
-
-
-        yield return new WaitForSeconds(fnWaitTime);
-
-        foreach (GameObject fn in funnels)
+        for (int i = 0; i < funnels.Length; i++)
         {
+            var fn = funnels[i];
             if (!fn) continue;
-             
-
             var fm = fn.GetComponent<FunnelManager>();
             if (!fm) continue;
 
+            yield return new WaitWhile(AnyFunnelMoving);
 
-            yield return new WaitUntil(() => CompMove == funnels.Length);
-            Coroutine hm = StartCoroutine(HomingTime(ft + tt,fm));
+            StartCoroutine(HomingTime(ft + tt, fm));
             fm.InstansBeam(tt, ft, fw);
-            
 
             yield return new WaitForSeconds(fireTimeSpan);
         }
-
+        yield break;
     }
+
+    // 11: 全機同時
+    if (fnNum == 11)
+    {
+        foreach (var fn in funnels)
+        {
+            if (!fn) continue;
+            var fm = fn.GetComponent<FunnelManager>();
+            if (!fm) continue;
+
+            StartCoroutine(HomingTime(ft + tt, fm));
+            fm.InstansBeam(tt, ft, fw);
+        }
+        yield break;
+    }
+
+    // それ以外: 指定番号だけ
+    if (fnNum < 0 || fnNum >= funnels.Length) yield break;
+
+    var targetFn = funnels[fnNum];
+    if (!targetFn) yield break;
+
+    var targetFm = targetFn.GetComponent<FunnelManager>();
+    if (!targetFm) yield break;
+
+    StartCoroutine(HomingTime(ft + tt, targetFm));
+    targetFm.InstansBeam(tt, ft, fw);
+}
+
     IEnumerator HomingTime(float time,FunnelManager fm)
     {
         center = !target? transform.position:target.transform.position;

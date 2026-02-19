@@ -5,7 +5,7 @@ public class EnemyAttackGenarator : MonoBehaviour
 {
    
     public GameObject missile;
-    public float spreadAngle = 60;
+    
 
     public Transform sendTarget ; 
 
@@ -26,10 +26,10 @@ public class EnemyAttackGenarator : MonoBehaviour
     IEnumerator AttackRoutine()//デバッグ用の攻撃パターンを手書きで書いています：実装ではインスペクターから操作するように
     {   
        var wait = new WaitForSeconds(3);
-       
+       /*
        yield return wait;
     
-        MissileAttack(10);
+        MissileAttack(10,60);
 
         yield return wait;
 
@@ -39,11 +39,17 @@ public class EnemyAttackGenarator : MonoBehaviour
 
         FunnelAttack();
 
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(15f);
 
         FunnelSimau();
 
-        
+        yield return new WaitForSeconds(10f);
+*/
+        fnMove.GoAllRangeAttack();
+
+        yield return wait;
+
+        MissileAttack(20,170);
     }
 
 void FunnelAttack()
@@ -55,8 +61,10 @@ void FunnelSimau()
     {
         fnMove.FNSimau(transform);
     }
-void MissileAttack(int missileCount)
+void MissileAttack(int missileCount,float spreadAngle)
 {
+
+    
     float baseAngle = transform.eulerAngles.z;
 
     float step  = (missileCount <= 1) ? 0f : spreadAngle / (missileCount - 1);

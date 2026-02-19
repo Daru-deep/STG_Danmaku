@@ -105,9 +105,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c6dd54046c6484aadfd74044e3b3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomingMissileScript
-  speed: 5
-  turnRate: 90
-  homingDelay: 1
+  speed: 4
+  turnRate: 120
+  homingDelay: 1.5
   gm: {fileID: 0}
   target: {fileID: 0}
 --- !u!50 &8347821886144003003
