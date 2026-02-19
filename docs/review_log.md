@@ -34,9 +34,19 @@
 
 ### Result
 - Fixed? (Y/N)
+- Root cause: (1行)
+- Prevention: (1行)
 - Notes:
+
+### Implementation
+- Applied by: (Manual / Shiori(APPLY) / Pair)
+- Notes: (自分で考えた点、詩織が効いた点を一言)
+- Learning: (今回の学びを1行)
+
 
 ### Score impact (optional)
 - p0_stability: +0.5 (reason)
 - bug_investigation: +0.5 (reason)
 - architecture: +0.5 (reason)
+
+

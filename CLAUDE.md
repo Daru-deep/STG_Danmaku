@@ -40,3 +40,4 @@ P2: readability & maintainability (naming, separation, docs)
 - "SCORE" : update docs/scorecard.md + append a row to docs/score_history.csv (with overall_100).
 - "MONITOR" : update docs/shiori_monitoring.md (strengths/weaknesses/risks/next focus max 3).
 
+- For LOG: include "Implementation: Manual / Shiori(APPLY) / Pair" as one line.
