@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class meManager : MonoBehaviour
@@ -27,8 +28,8 @@ public class meManager : MonoBehaviour
         {
             if(isParry)
             {
-                StartCoroutine (GoParry());//円のエフェクトとか付けたいね。あとコントローラに登録してないよ
-                return;
+                StartCoroutine (GoParry(other));//円のエフェクトとか付けたいね。あとコントローラに登録してないよ
+                
             }
             else
             {
@@ -37,12 +38,22 @@ public class meManager : MonoBehaviour
         }
     }
 
-    IEnumerator GoParry()
-    {
-
-        //この上に書く
-        yield return new WaitForSeconds(0.5f);
-        isParry = false;
+    IEnumerator GoParry(Collider2D other)
+    {       
+            string otherName = other.gameObject.name;
+            Debug.Log($"PARRY!!{otherName}");
+            // パーティクルシステムのインスタンスを生成する。
+			ParticleSystem newParticle = Instantiate(particle);
+			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
+			newParticle.transform.position = this.transform.position;
+			// パーティクルを発生させる。
+			newParticle.Play();
+			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
+			// ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
+			Destroy(newParticle.gameObject, 1.0f);
+            //isParry = false;
+            yield return null;
+        
     }
 
     public void PlayerDown()
@@ -54,15 +65,7 @@ public class meManager : MonoBehaviour
         }
         else
         {
-            // パーティクルシステムのインスタンスを生成する。
-			ParticleSystem newParticle = Instantiate(particle);
-			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
-			newParticle.transform.position = this.transform.position;
-			// パーティクルを発生させる。
-			newParticle.Play();
-			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
-			// ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
-			Destroy(newParticle.gameObject, 5.0f);
+
         }
     }
 }

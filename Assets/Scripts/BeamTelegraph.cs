@@ -83,7 +83,7 @@ public class BeamTelegraphLine : MonoBehaviour
             {
                 // ここでゲームオーバー処理を呼ぶ
                 var player = FindPlayerLife();
-                if (player != null&&!test) player.PlayerDown();
+                if (player != null&&!test) player.PlayerDown("beam");
                 break;
             }
 

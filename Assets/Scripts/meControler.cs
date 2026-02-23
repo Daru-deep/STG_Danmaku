@@ -44,12 +44,20 @@ public class meControler : MonoBehaviour
     {
 
         
-        if(isDashing&&ctx.performed) 
+        if(ctx.performed&&!mM.isParry) 
         {
             Debug.Log("PUSH_PARRY_EVENT!!");
-            mM.isParry = true;
+            StartCoroutine(PushParyCount());
         }
         
+    }
+
+        IEnumerator PushParyCount()
+    {
+        mM.isParry = true;
+        yield return new WaitForSeconds(0.3f);
+        mM.isParry = false;
+
     }
 
     void Update()

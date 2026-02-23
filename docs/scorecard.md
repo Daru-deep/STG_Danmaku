@@ -2,31 +2,32 @@
 
 ## Week: 2026-02-16 ~ 2026-02-22
 ### Scores (1–5)
-- P0安定性: 2.5/5　← +0.5
-- バグ調査力: 2/5
+- P0安定性: 2.5/5
+- バグ調査力: 2.3/5　← +0.3
 - 次の一手: 2/5
-- Unityライフサイクル耐性: 2.5/5　← +0.5
+- Unityライフサイクル耐性: 2.7/5　← +0.2
 - アーキ設計: 2/5
 - 可読性: 2/5
 - 保守性: 2/5
 - パフォーマンス/GC: 2/5
 
-**Overall: 43/100**　（前回 40 → +3）
+**Overall: 44/100**　（前回 43 → +1）
 
 ### Highlights (what improved)
-- FNAllRangeAttack の内側 while に target null チェックを追加し MissingReferenceException を根本解決
-- Awake Fail-Fast パターン（`enabled = false` + Debug.LogError）を 4 ファイルに適用
-- `yield return null` の前後でオブジェクトが破壊されうる、という Unity ライフサイクルの核心を理解した
+- `Destroy(obj, t)` が C# コルーチンではなくエンジン内部タイマーであることを自分で疑問視・理解
+- Particle の生成〜破棄を `Destroy(t)` で正しく管理
+- PlayerDown() に `if(!isParry)` ガードを追加（二重発火防止）
+- パリィ判定をコルーチン（PushParyCount）で時間管理する設計を自分で考えた
 
 ### Biggest risks (what can break next)
-- PlayerAttackGenarator の無制限 Instantiate → プレイ時間が長くなるほどメモリ増大
-- FunnelMove の肥大化 → 機能追加のたびに副作用が広がる
-- コルーチン内の残存 GetComponent（TryGetComponent 未移行箇所）→ GC 負荷
+- meControler.cs:50 — `StopCoroutine(PushParyCount())` が動いているコルーチンを止められない（P1）
+- PlayerAttackGenarator の無制限 Instantiate → メモリ増大（P1）
+- FunnelMove 内の残存 GetComponent → GC 負荷
 
 ### Next focus (max 3)
-1) PlayerAttackGenarator に Object Pool を導入（P1解消 + GC改善）
-2) FunnelMove 内の残存 GetComponent を TryGetComponent に移行（P1/GC改善）
-3) FunnelMove のコルーチン肥大化を整理（P1/保守性）
+1) meControler.cs の StopCoroutine を Coroutine 変数管理に修正（P1解消）
+2) PlayerAttackGenarator に Object Pool を導入（P1解消 + GC改善）
+3) FunnelMove 内の残存 GetComponent を TryGetComponent に移行
 
 ### Evidence
 - review_log entries:

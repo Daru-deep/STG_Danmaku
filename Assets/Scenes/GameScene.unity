@@ -711,7 +711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9253d805aa398e4cb8a4ca70b8a0afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  HP: 100
+  HP: 1000
   gm: {fileID: 180033634}
 --- !u!50 &1435004649
 Rigidbody2D:
