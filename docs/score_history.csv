@@ -1,3 +1,4 @@
 week_start,week_end,p0_stability,bug_investigation,next_step,unity_lifecycle,architecture,readability,maintainability,performance_gc,overall_100,notes
 2026-02-16,2026-02-22,2,2,2,2,2,2,2,2,40,初回スコア。P0 scan でクラッシュ候補10件検出。機能実装力はあるが防御的プログラミングが全体的に不足。
 2026-02-19,2026-02-19,2.5,2.3,2,2.7,2,2,2,2,44,パリィ+パーティクル実装。Awake Fail-Fast × 4ファイル適用。Destroy(t)の仕組みを理解。StopCoroutine の管理パターンが未習得（P1残）。
+2026-02-27,2026-02-27,2.7,2.5,2,2.9,2,2,2,2,45,BeamTelegraph コード読解。out _ / 1<<layer を理解。ParryRingEffect P0 検出・修正。自己破壊パターン適用。parryRingPrefab null チェック未適用（P0残）。

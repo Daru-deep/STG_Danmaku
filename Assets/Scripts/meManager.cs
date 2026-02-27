@@ -9,6 +9,10 @@ public class meManager : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private ParticleSystem particle;
 
+  
+
+
+
     public bool isParry = false;
     
     void Awake()
@@ -24,28 +28,34 @@ public class meManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
+
         if (other.gameObject.CompareTag("EnemyAttack"))
         {
-            if(isParry)
-            {
-                StartCoroutine (GoParry(other));//円のエフェクトとか付けたいね。あとコントローラに登録してないよ
-                
-            }
-            else
-            {
-                PlayerDown();
-            }
+             int layer = other.gameObject.layer;
+             if(layer == 7)PlayerDown("Bullet") ;
+             if(layer == 8)PlayerDown("Missile");
+            
+            
         }
     }
 
-    IEnumerator GoParry(Collider2D other)
+    void StartGoParry()
+    {
+        
+    }
+
+    IEnumerator GoParry(string type)
     {       
-            string otherName = other.gameObject.name;
+            string otherName = type;
             Debug.Log($"PARRY!!{otherName}");
             // パーティクルシステムのインスタンスを生成する。
 			ParticleSystem newParticle = Instantiate(particle);
+
+            
 			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
 			newParticle.transform.position = this.transform.position;
+            
 			// パーティクルを発生させる。
 			newParticle.Play();
 			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
@@ -56,7 +66,7 @@ public class meManager : MonoBehaviour
         
     }
 
-    public void PlayerDown()
+    public void PlayerDown(string type)
     {
         if(!isParry)
         {
@@ -65,6 +75,8 @@ public class meManager : MonoBehaviour
         }
         else
         {
+
+                StartCoroutine (GoParry(type));//円のエフェクトとか付けたいね。あとコントローラに登録してないよ
 
         }
     }

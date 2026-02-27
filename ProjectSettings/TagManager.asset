@@ -9,18 +9,19 @@ TagManager:
   - Missile
   - Enemy
   - Bullet
+  - MyAttack
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Effect
   - Water
   - UI
   - Player
   - Bullet
   - prop
-  - 
-  - 
+  - Funnel
+  - Missile
   - 
   - 
   - 

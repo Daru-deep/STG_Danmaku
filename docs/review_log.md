@@ -60,6 +60,61 @@
 
 ---
 
+## 2026-02-27
+### Context
+- Project: Bullet Hell (Unity/C#)
+- Trigger: パリィリングエフェクト実装後の P0 scan。ParryRingEffect.cs 新設・meManager/meControler 更新。
+- Command used: P0 scan → APPLY × 1
+
+### Evidence
+- Console / Stacktrace:
+  - `NullReferenceException` 予備軍 — ParryRingEffect.Awake() で SpriteRenderer 未取得時に mat = sr.material がクラッシュ
+  - `ArgumentException` 予備軍 — meControler.OnParryEvent() で parryRingPrefab 未アサイン時に Instantiate がクラッシュ
+  - リングが消えない — ParryRingEffect に自己破壊処理がなく Destroy/enabled=false なし
+- Repro steps:
+  1) parryRingPrefab を Inspector にアサインしないままスペースキーを押す → ArgumentException
+  2) parryRingPrefab に SpriteRenderer が未アタッチの prefab を設定 → NullReferenceException
+  3) パリィ成功 → リングが残り続ける（duration 経過後も）
+- Related files:
+  - `Assets/Scripts/ParryRingEffect.cs`
+  - `Assets/Scripts/meControler.cs`
+  - `Assets/Scripts/meManager.cs`
+
+### Findings
+- P0:
+  - ParryRingEffect.cs:14 — SpriteRenderer null チェックなしで mat = sr.material → NullReferenceException
+  - meControler.cs:54 — parryRingPrefab 未アサイン時に Instantiate → ArgumentException
+- P1:
+  - ParryRingEffect.cs — duration 経過後も Update が動き続けてオブジェクトが残存
+  - meManager.cs:36-37 — レイヤー番号ハードコード（layer==7, layer==8）、LayerMask と不整合リスク
+  - meControler.cs:54 — Instantiate が isParry チェックの外にあり、連打でリングが複数生成される
+- P2:
+  - ParryRingEffect.cs:24 — Debug.Log が毎フレーム出力
+  - meManager.cs:43-46 — StartGoParry() が空メソッドのまま残存
+  - meManager.cs:64 — isParry = false がコメントアウトされたまま
+
+### Fix plan (file-by-file)
+- [x] `Assets/Scripts/ParryRingEffect.cs` — Awake に SpriteRenderer null チェック追加、Update に duration 後の Destroy(gameObject)、Debug.Log 削除
+- [ ] `Assets/Scripts/meControler.cs` — Awake に parryRingPrefab null チェック追加
+- [ ] `Assets/Scripts/meManager.cs` — レイヤー番号をハードコードから LayerMask 比較に変更
+
+### Result
+- Fixed? 部分的（ParryRingEffect のみ）
+- Root cause: 新規スクリプト作成時に Awake Fail-Fast ガードと自己破壊処理が抜けた。
+- Prevention: 新しい MonoBehaviour を作る際は Awake の null チェックと、生成したオブジェクトの寿命管理（Destroy/pool）を必ずセットで実装する。
+- Notes: BeamTelegraph.cs の PlayerDown 呼び出しに string 引数が追加された（"beam"）。meManager.PlayerDown(string) のシグネチャ変更は整合している。
+
+### Implementation
+- Applied by: Shiori(APPLY)
+- Notes: ParryRingEffect の自己破壊は自分では気づいていなかった点。ビット演算（1 << layer）と LayerMask の仕組みを理解した。
+- Learning: MonoBehaviour で Instantiate したオブジェクトには必ず寿命管理（Destroy(t) か Destroy(gameObject) か Pool）を付ける。
+
+### Score impact
+- p0_stability: +0.2 (ParryRingEffect Awake ガード追加)
+- unity_lifecycle: +0.2 (duration 後の自己破壊パターンを適用)
+
+---
+
 ## YYYY-MM-DD
 ### Context
 - Project: Bullet Hell (Unity/C#)
