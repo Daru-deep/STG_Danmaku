@@ -7,7 +7,7 @@ public class meControler : MonoBehaviour
     public float normalSpeed = 5f;
     public float dashSpeed = 20f;
 
-    [SerializeField] float parryTime = 0.3f;
+    [SerializeField] float parryTime = 0.5f;
 
     [SerializeField] private GameObject parryRingPrefab;
     
@@ -51,13 +51,9 @@ public class meControler : MonoBehaviour
         if(ctx.performed) 
         {
 
-            GameObject ring = Instantiate(parryRingPrefab);
-            ring.transform.position = this.transform.position;
+            GameObject ring = Instantiate(parryRingPrefab,transform);
             Debug.Log("PUSH_PARRY_EVENT!!");
-            if (!mM.isParry)
-            {
-                StartCoroutine(PushParyCount());
-            }
+            StartCoroutine(PushParyCount());
             
             
         }

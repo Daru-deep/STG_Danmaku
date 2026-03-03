@@ -107,6 +107,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::gunManager
   speed: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  bulletLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!70 &-3047645168598724308
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

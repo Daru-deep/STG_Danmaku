@@ -109,8 +109,13 @@ MonoBehaviour:
   speed: 4
   turnRate: 120
   homingDelay: 1.5
-  gm: {fileID: 0}
   target: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  bulletLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!50 &8347821886144003003
 Rigidbody2D:
   serializedVersion: 5

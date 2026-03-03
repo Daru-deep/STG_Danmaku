@@ -7,17 +7,23 @@ public class HomingMissileScript : MonoBehaviour
     [SerializeField] float turnRate = 360f;     // 旋回速度(度/秒)
     [SerializeField] float homingDelay = 0.15f; // 最初は直進する時間
 
-    [SerializeField]GameManager gm;
-
     public Transform target;
 
-    
+    [SerializeField] LayerMask playerLayer;
+    [SerializeField] LayerMask bulletLayer;
     float timer;
 
+    int mode = 0;
+
     public void SetTarget(Transform t) => target = t;
-    public void SetGM(GameManager g) => gm = g;
 
-
+    void Awake()
+    {
+        if (gameObject.CompareTag("MyAttack"))
+        {
+            mode = 1;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -42,18 +48,34 @@ public class HomingMissileScript : MonoBehaviour
         
         transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
     }
+
+
+
    private void OnTriggerEnter2D(Collider2D other) {
    
     {
-        if (other.gameObject.CompareTag("Player")||other.gameObject.CompareTag("Bullet"))//ミサイルヒット
+        int layer = other.gameObject.layer;
+        if ((playerLayer & (1 << layer)) != 0 || (bulletLayer & (1 << layer)) != 0)//ミサイルヒット
         {
-            Destroy(this.gameObject);
-
+            if(mode == 0)DestroyMissile();
+            if(mode == 1)
+                {
+                    if (other.CompareTag("Enemy"))
+                    {
+                        other.GetComponent<EnemyManager>().ChangHP(100);
+                        DestroyMissile();
+                    }
+                }
         }
 
         
     }
    }
+
+   public void DestroyMissile()
+    {
+         Destroy(this.gameObject);
+    }
 
 }
 

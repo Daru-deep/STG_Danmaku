@@ -6,6 +6,8 @@ public class gunManager : MonoBehaviour
 {
     Vector2 top ;
     public float speed = 10f;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] LayerMask bulletLayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,7 +40,8 @@ public class gunManager : MonoBehaviour
  private void OnTriggerEnter2D(Collider2D other) {
    
     {
-        if (other.gameObject.CompareTag("Enemy")||other.gameObject.CompareTag("Bullet"))//ミサイルヒット
+        int layer = other.gameObject.layer;
+        if ((enemyLayer & (1 << layer)) != 0 || (bulletLayer & (1 << layer)) != 0)
         {
             Destroy(this.gameObject);
 

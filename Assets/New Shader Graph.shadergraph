@@ -264,8 +264,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 1740.0,
-            "y": -482.3999938964844
+            "x": 1288.0,
+            "y": -679.199951171875
         },
         "m_Blocks": [
             {
@@ -281,8 +281,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 1740.0,
-            "y": -248.0000762939453
+            "x": 1288.0,
+            "y": -444.79998779296877
         },
         "m_Blocks": [
             {
@@ -346,7 +346,7 @@
         "opposite"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -558,7 +558,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "2b8a55f0f13a481180f648a6b2a7d32d",
     "m_Id": 0,
-    "m_DisplayName": "Redius",
+    "m_DisplayName": "Radius",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -626,7 +626,7 @@
     "m_ObjectId": "443fd6100b214d1cbde4f990302f2b49",
     "m_Datas": [],
     "m_ActiveSubTarget": {
-        "m_Id": "4f825462c354404990fee6275b868afe"
+        "m_Id": "a6e4c1d0450a420b8908650603ae770b"
     },
     "m_AllowMaterialOverride": false,
     "m_SurfaceType": 1,
@@ -682,15 +682,6 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
-}
-
-{
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalUnlitSubTarget",
-    "m_ObjectId": "4f825462c354404990fee6275b868afe",
-    "m_KeepLightingVariants": false,
-    "m_DefaultDecalBlending": true,
-    "m_DefaultSSAO": true
 }
 
 {
@@ -1284,10 +1275,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1312.7998046875,
-            "y": -412.7999267578125,
-            "width": 208.0,
-            "height": 301.5999755859375
+            "x": 1102.4000244140625,
+            "y": -479.1999206542969,
+            "width": 135.19970703125,
+            "height": 117.5999755859375
         }
     },
     "m_Slots": [
@@ -1307,7 +1298,7 @@
         "x"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -1338,6 +1329,12 @@
         "w": 0.0
     },
     "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalSpriteUnlitSubTarget",
+    "m_ObjectId": "a6e4c1d0450a420b8908650603ae770b"
 }
 
 {
@@ -1375,10 +1372,10 @@
     "promotedFromAssetID": "",
     "promotedFromCategoryName": "",
     "promotedOrdering": -1,
-    "m_Name": "Redius",
+    "m_Name": "Radius",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Redius",
-    "m_DefaultReferenceName": "_Redius",
+    "m_RefNameGeneratedByDisplayName": "Radius",
+    "m_DefaultReferenceName": "_Radius",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1667,10 +1664,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1175.4141845703125,
-            "y": -435.7666320800781,
-            "width": 0.0,
-            "height": 0.0
+            "x": 965.5999145507813,
+            "y": -502.39996337890627,
+            "width": 107.99993896484375,
+            "height": 33.5999755859375
         }
     },
     "m_Slots": [
@@ -1867,7 +1864,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "fd085b26cf9a497ba0784f8b4f0e54c2",
     "m_Id": 0,
-    "m_DisplayName": "Redius",
+    "m_DisplayName": "Radius",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

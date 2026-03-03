@@ -1,13 +1,7 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.SocialPlatforms.GameCenter;
-using UnityEngine.Timeline;
-using UnityEngine.UIElements;
 
 public class FunnelMove : MonoBehaviour
 {

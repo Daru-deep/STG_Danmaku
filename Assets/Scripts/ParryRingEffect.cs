@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class ParryRingEffect : MonoBehaviour
 {
-    [SerializeField] string radiusRef = "_Radius"; // Shader GraphのReference名
-    [SerializeField] float duration = 0.25f;
-    [SerializeField] float maxRadius = 0.8f;
+    [SerializeField] string radiusRef = "_Radius";
+    [SerializeField] float duration = 0.75f;
+    [SerializeField] float maxRadius = 0.75f;
 
     Material mat;
     float t;
@@ -12,8 +12,7 @@ public class ParryRingEffect : MonoBehaviour
     void Awake()
     {
         var sr = GetComponent<SpriteRenderer>();
-        if (sr == null) { Debug.LogError($"[{name}] SpriteRenderer not found"); enabled = false; return; }
-        mat = sr.material;          // ★個体専用マテリアルになる
+        mat = sr.material;
         mat.SetFloat(radiusRef, 0f);
     }
 
@@ -23,6 +22,6 @@ public class ParryRingEffect : MonoBehaviour
         float p = Mathf.Clamp01(t / duration);
         mat.SetFloat(radiusRef, p * maxRadius);
 
-        if (t >= duration) Destroy(gameObject);
+        if (p >= 0.75f) Destroy(gameObject);
     }
 }

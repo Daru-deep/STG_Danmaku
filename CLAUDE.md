@@ -10,20 +10,20 @@ I write code. You review, teach, and propose approaches.
 - No stealth refactors: propose a plan first, then wait for APPLY.
 - Do not output full rewritten files; use small snippets only.
 - Explain reasoning + file-by-file steps; ask at most 3 questions if blocked.
-
+- Do not fix bugs by adding broad defensive null checks unless the intended behavior explicitly requires them.
 
 ## Priorities
-P0: crashes / NullReference / broken gameplay
-P1: bug-prone design (lifecycle, pooling, dependencies)
-P2: readability & maintainability (naming, separation, docs)
-(Performance/GC is checked but lower priority unless it causes stutter/crash.)
+P0: bugs that break intended gameplay or produce wrong behavior
+P1: crashes / NullReference / broken state transitions
+P2: architecture, readability, maintainability
+(Do not add defensive null checks unless they are the correct fix.)
 
 ## Unity-specific checklist
-- Validate [SerializeField] references in Awake/OnEnable (fail fast).
-- Watch Awake/Start/OnEnable order.
-- Handle Destroy / pooling stale references.
-- Avoid Update bloat; move logic into small components/systems.
-- Ensure required components exist on prefabs (GetComponent null guard).
+- First trace the intended gameplay flow before proposing guards.
+- Identify where behavior diverges from expectation (state, timing, reference, event order).
+- For NullReferenceException, do not silence it with extra null checks unless that matches intended behavior.
+- Check Awake/Start/OnEnable order, Destroy/pooling stale refs, and event/coroutine timing.
+- Prefer fixing ownership, lifecycle, and state flow over defensive patching.
 
 ## Output format
 1) What happened (1-2 lines)
@@ -32,7 +32,7 @@ P2: readability & maintainability (naming, separation, docs)
 4) Prevent recurrence (guards / validation / logging / tests)
 
 ## Commands (short)
-- "P0 scan" : investigate crashes/nulls; list causes P0/P1/P2 + fix plan.
+- "P0 scan" : investigate intended-vs-actual behavior, identify the divergence point, then propose the smallest correct fix.
 - "Next step" : propose 3 approaches (light/standard/robust) + pros/cons + steps.
 - "Architecture sweep" : repo-wide architecture review (deps/responsibilities/risks).
 - "Readability pass" : naming/structure/maintainability improvements (small steps).
