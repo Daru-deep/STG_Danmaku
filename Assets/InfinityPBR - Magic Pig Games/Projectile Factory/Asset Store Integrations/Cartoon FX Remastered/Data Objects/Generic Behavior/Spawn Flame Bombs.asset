@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad4e024921c480c8278740098b0d9f6, type: 3}
+  m_Name: Spawn Flame Bombs
+  m_EditorClassIdentifier: 
+  projectiles:
+  - {fileID: 484858012604397281, guid: 531362a9375f6496d8abb39d8680adaf, type: 3}
+  startDelay: 4
+  spawnInterval: 1
+  totalSpawns: -1
+  startSpawningOnLaunch: 1
+  destroyWhenDone: 1
+  destroyDelay: 1
+  spawnAtRandomDirection: 1
+  spawnDirection: {x: 0, y: 0, z: -1}
+  offsetFromSpawner: 0.5

@@ -16,6 +16,7 @@ public class GetParryItem : MonoBehaviour
 
     [SerializeField] SpriteRenderer parryEffect;
 
+    [SerializeField] private ParticleSystem ParryParticle;
     float EffectFeedSpeed = 1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,10 +24,6 @@ public class GetParryItem : MonoBehaviour
         
     }
 
-    void Awake()
-    {
-                if(parryEffect != null) parryEffect.color = new Color(1f, 1f, 1f, 0f);
-    }
 
     // Update is called once per frame
     void Update()
@@ -66,32 +63,26 @@ public class GetParryItem : MonoBehaviour
             Debug.Log($"PARRY!!{otherName}");
             // パーティクルシステムのインスタンスを生成する。
 			ParticleSystem newParticle = Instantiate(particle);
-            StartCoroutine(EffectON());
+            ParticleSystem parryP = Instantiate(ParryParticle);
+   
             
 			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
 			newParticle.transform.position = this.transform.position;
+            parryP.transform.position = this.transform.position;
             
 			// パーティクルを発生させる。
 			newParticle.Play();
+            parryP.Play();
 			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
 			// ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
 			Destroy(newParticle.gameObject, 1.0f);
+            Destroy(parryP.gameObject,1.0f);
             //isParry = false;
             yield return null;
         
     }
 
-    IEnumerator EffectON()
-    {
-        float opacity = 1f;
-        while (opacity > 0f)
-        {
-            opacity -= EffectFeedSpeed * Time.deltaTime;
-            if (parryEffect != null)
-                parryEffect.color = new Color(1f, 1f, 1f, Mathf.Max(0f, opacity));
-            yield return null;
-        }
-    }
+
 
     
 }

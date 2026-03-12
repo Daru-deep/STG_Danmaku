@@ -10,6 +10,8 @@ public class meControler : MonoBehaviour
     [SerializeField] float parryTime = 0.5f;
 
     [SerializeField] private GameObject parryRingPrefab;
+
+    [SerializeField] private GameObject sp;
     
     Vector2 move;
     float moveSpeed;
@@ -26,7 +28,7 @@ public class meControler : MonoBehaviour
     {
         mM = GetComponent<meManager>();
         if (mM == null) { Debug.LogError($"[{name}] meManager not found"); enabled = false; return; }
-        meColor = GetComponent<SpriteRenderer>();
+        meColor = sp.GetComponent<SpriteRenderer>();
         moveSpeed = normalSpeed;
     }
 

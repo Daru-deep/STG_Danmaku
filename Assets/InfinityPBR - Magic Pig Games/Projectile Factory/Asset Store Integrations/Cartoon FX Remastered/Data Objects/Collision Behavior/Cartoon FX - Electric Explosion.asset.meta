@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 428f572a4fb97467491e1f54b547360c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 282084
+  packageName: Projectile Factory for Cartoon FX Remaster by Jean Moreno
+  packageVersion: 1.0.2
+  assetPath: Assets/InfinityPBR - Magic Pig Games/Projectile Factory/Asset Store
+    Integrations/Cartoon FX Remastered/Data Objects/Collision Behavior/Cartoon FX
+    - Electric Explosion.asset
+  uploadId: 657286
