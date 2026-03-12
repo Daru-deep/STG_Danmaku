@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   hptxt: {fileID: 1813447351}
+  inGame: 1
 --- !u!4 &180033635
 Transform:
   m_ObjectHideFlags: 0
@@ -616,7 +617,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.3529412}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -653,8 +654,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9253d805aa398e4cb8a4ca70b8a0afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  HP: 1000
+  HP: 10
   gm: {fileID: 180033634}
+  breakEffect: {fileID: 4593184484909914550, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
 --- !u!50 &1435004649
 Rigidbody2D:
   serializedVersion: 5
@@ -896,6 +898,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   mM: {fileID: 2036015939}
+  particle: {fileID: 5702987738784141676, guid: 4ae602f1ffcdb3649ad9ef326af8408d, type: 3}
+  parryEffect: {fileID: 27809808}
 --- !u!1 &1744760858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1502,11 +1506,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::meManager
   gm: {fileID: 180033634}
-  particle: {fileID: 5702987738784141676, guid: 4ae602f1ffcdb3649ad9ef326af8408d, type: 3}
   missileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  parryEffect: {fileID: 27809808}
   isParry: 0
 --- !u!1001 &8295719989368441333
 PrefabInstance:

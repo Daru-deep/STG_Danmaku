@@ -28,6 +28,7 @@ public class EnemyAttackGenarator : MonoBehaviour
     }
     IEnumerator AttackRoutine()//デバッグ用の攻撃パターンを手書きで書いています：実装ではインスペクターから操作するように
     {   
+    
        var wait = new WaitForSeconds(3);
        
        yield return wait;
@@ -46,7 +47,7 @@ public class EnemyAttackGenarator : MonoBehaviour
 
         FunnelSimau();
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
 
         fnMove.GoAllRangeAttack();
 

@@ -55,17 +55,21 @@ public class HomingMissileScript : MonoBehaviour
    
     {
         int layer = other.gameObject.layer;
-        if ((playerLayer & (1 << layer)) != 0 || (bulletLayer & (1 << layer)) != 0)//ミサイルヒット
+        if(mode == 0)
         {
-            if(mode == 0)DestroyMissile();
-            if(mode == 1)
-                {
-                    if (other.CompareTag("Enemy"))
-                    {
-                        other.GetComponent<EnemyManager>().ChangHP(100);
-                        DestroyMissile();
-                    }
-                }
+            if ((playerLayer & (1 << layer)) != 0 || (bulletLayer & (1 << layer)) != 0)//ミサイルヒット
+            {
+                if(mode == 0)DestroyMissile();
+            }
+        }
+
+        if(mode == 1)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                other.GetComponent<EnemyManager>().ChangHP(100);
+                DestroyMissile();
+            }
         }
 
         
