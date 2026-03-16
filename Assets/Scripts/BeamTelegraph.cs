@@ -22,6 +22,7 @@ public class BeamTelegraphLine : MonoBehaviour
     private float telegraphWidth ; // 細い
     private float fireWidth = 0.20f;      // 太い（見た目＆判定の太さ）
 
+    
     [Header("Hit")]
     private bool test = false;
 
@@ -82,14 +83,24 @@ public class BeamTelegraphLine : MonoBehaviour
             if (HitPlayer(start, end, fireWidth))
             {
                 // ここでゲームオーバー処理を呼ぶ
-                var player = FindPlayerLife();
+                var player = FindPlayerLife();//念のためプレイヤーの存在を確認
                 if (player != null&&!test) player.PlayerDown("beam");
                 break;
             }
 
             yield return null;
         }
-
+        // 3) 余韻：細いビームから消えるビームまで（当たり判定なし）
+        t = 0;
+        float ratio = 2f; 
+        while (t <= fireWidth)
+        {
+            t += Time.deltaTime;
+            float nowWidth = (fireWidth - (t *ratio) <= 0) ? 0 : fireWidth -(t * ratio); 
+            SetWidth(nowWidth);
+            UpdateLine();
+            yield return null;
+        }
         lr.enabled = false;
         co = null;
         beamCondition= 0;
@@ -132,7 +143,7 @@ bool HitPlayer(Vector2 start, Vector2 end, float width)
     // player + bullet を拾う
     LayerMask hitMask = playerMask | bulletMask;
 
-    // ほんの少し前に出して自分/発射点巻き込みを減らす（任意）
+    // ほんの少し前に出して自分/発射点巻き込みを減らす
     Vector2 castStart = start + dir * 0.02f;
 
     RaycastHit2D hit = Physics2D.CircleCast(castStart, radius, dir, dist, hitMask);
@@ -154,6 +165,12 @@ bool HitPlayer(Vector2 start, Vector2 end, float width)
     return false;
 }
 
+    public float ReturnBeamTime()
+    {
+        float time = telegraphTime + fireTime +fireWidth;
+        return time;
+    }
+
 
     meManager FindPlayerLife()
     {
@@ -161,4 +178,8 @@ bool HitPlayer(Vector2 start, Vector2 end, float width)
         var go = GameObject.FindWithTag("Player");
         return go ? go.GetComponent<meManager>() : null;
     }
+
+
 }
+
+

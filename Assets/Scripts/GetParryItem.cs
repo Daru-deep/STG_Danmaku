@@ -10,6 +10,8 @@ public class GetParryItem : MonoBehaviour
     [SerializeField]GameObject[] presentsList;
     [SerializeField]LayerMask missileLayer;
 
+    [SerializeField] GameManager gm;
+
     [SerializeField] meManager mM;
 
     [SerializeField] private ParticleSystem particle;
@@ -36,7 +38,7 @@ public class GetParryItem : MonoBehaviour
         int layer = other.gameObject.layer;
         if ((missileLayer & (1 << layer)) != 0 && mM.isParry)
         {
-            other.GetComponent<HomingMissileScript>().DestroyMissile();
+            other.GetComponent<HomingMissileScript>().IsParryMissile();
             Vector2 tr =new Vector2(transform.position.x,transform.position.y);
             GameObject presentMissile = Instantiate(presentsList[0],tr,quaternion.identity);
 

@@ -11,6 +11,8 @@ public class meControler : MonoBehaviour
 
     [SerializeField] private GameObject parryRingPrefab;
 
+    [SerializeField] private GameManager gm;
+
     [SerializeField] private GameObject sp;
     
     Vector2 move;
@@ -53,7 +55,7 @@ public class meControler : MonoBehaviour
         if(ctx.performed) 
         {
 
-            GameObject ring = Instantiate(parryRingPrefab,transform);
+            gm.StartParticle(3,transform,2,0.5f);
             Debug.Log("PUSH_PARRY_EVENT!!");
             StartCoroutine(PushParyCount());
             

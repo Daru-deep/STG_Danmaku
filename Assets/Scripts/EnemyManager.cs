@@ -56,6 +56,7 @@ public class EnemyManager : MonoBehaviour
         if(layer == bulletLayer)
         {
             ChangHP(1);
+            gm.StartParticle(1,other.transform,1,0.5f);
         }
 
     }

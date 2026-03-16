@@ -148,12 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61cb31ff49191944a4da3462cce7e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  part:
-  - {fileID: 2708598583397607910, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
-  - {fileID: 2504214343621411456, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
-  - {fileID: 725748389856807712, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
-  - {fileID: 6703250321131892299, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
-  - {fileID: 9027514048236820043, guid: effb650189dc5714e9e9801b1cfb3991, type: 3}
   hptxt: {fileID: 1813447351}
   inGame: 1
 --- !u!4 &180033635
@@ -1353,7 +1347,6 @@ MonoBehaviour:
   missileLayer:
     serializedVersion: 2
     m_Bits: 1024
-  gm: {fileID: 180033634}
   mM: {fileID: 2036015939}
   particle: {fileID: 5702987738784141676, guid: 4ae602f1ffcdb3649ad9ef326af8408d, type: 3}
   parryEffect: {fileID: 0}
@@ -1811,7 +1804,6 @@ MonoBehaviour:
   dashSpeed: 20
   parryTime: 1
   parryRingPrefab: {fileID: 379896062809332449, guid: e6596ea5c58a9914e930d3da80fc3f7f, type: 3}
-  gm: {fileID: 180033634}
   sp: {fileID: 1791050739}
 --- !u!114 &2036015936
 MonoBehaviour:

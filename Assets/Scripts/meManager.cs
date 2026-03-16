@@ -50,6 +50,7 @@ public class meManager : MonoBehaviour
     {
 
             Destroy(this.gameObject);
+            gm.StartParticle(0,gameObject.transform,1f,1f);
             gm.GameOver();
 
     }

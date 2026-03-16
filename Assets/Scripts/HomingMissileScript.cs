@@ -11,6 +11,8 @@ public class HomingMissileScript : MonoBehaviour
 
     [SerializeField] LayerMask playerLayer;
     [SerializeField] LayerMask bulletLayer;
+
+    private GameManager gm;
     float timer;
 
     int mode = 0;
@@ -23,6 +25,8 @@ public class HomingMissileScript : MonoBehaviour
         {
             mode = 1;
         }
+
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     // Update is called once per frame
     void Update()
@@ -57,6 +61,7 @@ public class HomingMissileScript : MonoBehaviour
         int layer = other.gameObject.layer;
         if(mode == 0)
         {
+
             if ((playerLayer & (1 << layer)) != 0 || (bulletLayer & (1 << layer)) != 0)//ミサイルヒット
             {
                 if(mode == 0)DestroyMissile();
@@ -78,7 +83,13 @@ public class HomingMissileScript : MonoBehaviour
 
    public void DestroyMissile()
     {
-         Destroy(this.gameObject);
+        if(gm!=null)gm.StartParticle(2,gameObject.transform,2,0.5f);
+        Destroy(this.gameObject);
+    }
+    public void IsParryMissile()
+    {
+        if(gm != null)gm.StartParticle(4,gameObject.transform,2,1);
+        Destroy(this.gameObject);
     }
 
 }

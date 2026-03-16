@@ -335,7 +335,7 @@ public class FunnelMove : MonoBehaviour
         return check;
     }
 
-    bool AnyFunnelMoving()//全部移動したか
+   public bool AnyFunnelMoving()//全部移動したか
 {
     if (funnels == null) return false;
 

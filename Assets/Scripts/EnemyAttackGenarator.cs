@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAttackGenarator : MonoBehaviour
@@ -39,11 +40,13 @@ public class EnemyAttackGenarator : MonoBehaviour
 
         BeamAttack(3,3,5);
 
-        yield return wait;
+        yield return new WaitForSeconds(beam.ReturnBeamTime());
 
         FunnelAttack();
 
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(7f);
+
+        yield return new WaitUntil(()=> !fnMove.AnyFunnelMoving());
 
         FunnelSimau();
 
