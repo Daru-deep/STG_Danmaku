@@ -5,5 +5,5 @@
 ゲームアクションとして、ギリギリで避けれるタイミングや、難易度に気を使っていて、基本インスペクターから調整ができるようにしています。
 また、パリィシステムなどを作成し、ゲームに奥行きを与えています。
 より、ゲームとしての完成度を挙げる為、アセットを多く使用する挑戦を行いました。
-
-![Adobe Express - Movie最終テスト012](https://github.com/user-attachments/assets/bbb227b0-7fbd-4e32-a821-b54da4d7eec6)
+動画URL
+https://youtu.be/1V2jEQguOpU
