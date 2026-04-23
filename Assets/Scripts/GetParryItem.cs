@@ -14,12 +14,9 @@ public class GetParryItem : MonoBehaviour
 
     [SerializeField] meManager mM;
 
-    [SerializeField] private ParticleSystem particle;
-
     [SerializeField] SpriteRenderer parryEffect;
 
     [SerializeField] private ParticleSystem ParryParticle;
-    float EffectFeedSpeed = 1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,20 +61,16 @@ public class GetParryItem : MonoBehaviour
             string otherName = type;
             Debug.Log($"PARRY!!{otherName}");
             // パーティクルシステムのインスタンスを生成する。
-			ParticleSystem newParticle = Instantiate(particle);
             ParticleSystem parryP = Instantiate(ParryParticle);
    
             
 			// パーティクルの発生場所をこのスクリプトをアタッチしているGameObjectの場所にする。
-			newParticle.transform.position = this.transform.position;
             parryP.transform.position = this.transform.position;
             
 			// パーティクルを発生させる。
-			newParticle.Play();
             parryP.Play();
 			// インスタンス化したパーティクルシステムのGameObjectを5秒後に削除する。(任意)
 			// ※第一引数をnewParticleだけにするとコンポーネントしか削除されない。
-			Destroy(newParticle.gameObject, 1.0f);
             Destroy(parryP.gameObject,1.0f);
             //isParry = false;
             yield return null;

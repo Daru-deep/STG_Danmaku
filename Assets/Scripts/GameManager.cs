@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]ParticleSystem[] part;
     [SerializeField]TextMeshProUGUI hptxt ;
 
+    [SerializeField]SceneChange sceneChange;
+
     public bool inGame = true;
 
     public void ChangeHPTxt(float hp)
@@ -15,12 +17,24 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("げーむおーばー");
+        Invoke("GoStartScene",5f);
     }
 
     public void GameClear()
     {
+        Invoke("GoStartScene",5f);
+    }
+
+    private void GoStartScene()
+    {
         
+        if(sceneChange != null)
+        {
+            sceneChange.ChangeScene(2);
+        } else
+        {
+            Debug.LogError("SceneManager is null in the GameManager");
+        }
     }
 
     public void StartParticle(int key,Transform tr ,  float time,float size)
